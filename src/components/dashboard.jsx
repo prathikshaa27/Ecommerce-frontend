@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts , fetchProductsByCategoryWithFilter} from '../services/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import HeaderFooter from './headerfooter';
 
 const Dashboard = () => {
   const [categories, setCategories] = useState([]);
@@ -10,85 +11,56 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchCategories();
-    fetchAllProducts();
+    fetchCategoriesData();
+    fetchAllProductsData();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchCategoriesData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/categories/', { withCredentials: true });
-      setCategories(response.data);
+      const categoriesData = await fetchCategories();
+      setCategories(categoriesData);
     } catch (error) {
       console.error('Error fetching categories:', error);
+      toast.error('Failed to fetch categories. Please try again later.');
+    }
+  };
+
+  const fetchAllProductsData = async () => {
+    try {
+      const productsData = await fetchAllProducts();
+      setProducts(productsData);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      toast.error('Failed to fetch products. Please try again later.');
     }
   };
 
   const handleCategoryClick = async (categoryId) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/categories/${categoryId}/`, { withCredentials: true });
-      console.log('Response data:', response.data);
-      if (response.data.length > 0) {
-        setProducts(response.data);
-      } else {
-        console.log('No products found for this category.');
-      }
+      const productsData = await fetchProductsByCategory(categoryId);
+      setProducts(productsData);
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
-    }
-  }
-  
-  const fetchAllProducts = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/categories/products/', { withCredentials: true });
-      setProducts(response.data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
+      toast.error('Failed to fetch products for selected category. Please try again later.');
     }
   };
 
   const handleSearch = async () => {
     if (searchQuery.trim() !== '') {
       try {
-        const response = await axios.get(`http://localhost:8000/api/search/?q=${searchQuery}`, { withCredentials: true });
-        setProducts(response.data);
+        const productsData = await searchProducts(searchQuery);
+        setProducts(productsData);
       } catch (error) {
         console.error('Error searching products:', error);
+        toast.error('Failed to search products. Please try again later.');
       }
     } else {
-      fetchAllProducts();
+      fetchAllProductsData();
     }
   };
-  console.log('Products:', products);
 
   return (
-      <div>
-        <header className="bg-dark text-white py-4">
-          <div className="container">
-            <div className="d-flex justify-content-between align-items-center">
-              <h1 className="logo">Shopify</h1>
-              <nav>
-                <ul className="nav">
-                  <li className="nav-item">
-                    <Link to="/profile" className="nav-link">
-                      <FontAwesomeIcon icon={faUser} />
-                      &nbsp; User Profile
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/cart" className="nav-link">
-                      <FontAwesomeIcon icon={faShoppingCart} />
-                      &nbsp; Cart
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/orders" className="nav-link">My Orders</Link>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </header>
-    
+      <HeaderFooter>
         <div className="container mt-4">
           <div className="row">
             <div className="col-lg-2">
@@ -122,7 +94,7 @@ const Dashboard = () => {
                 {products.map(product => (
                   <div className="col" key={product.id}>
                     <div className="card h-100">
-                      <Link to={`/products/${product.id}`} className="card-link"> 
+                      <Link to={`/products/${product.id}`} className="card-link">
                         <img src={product.image_url} className="card-img-top" alt={product.product_name} style={{ height: '200px', objectFit: 'cover' }} />
                         <div className="card-body">
                           <h5 className="card-title">{product.product_name}</h5>
@@ -136,16 +108,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <footer className="bg-dark text-white text-center py-3 mt-4">
-          <div className="container">
-            <p>&copy; 2024 Shopify. All rights reserved.</p>
-            <div className="social-icons">
-            </div>
-          </div>
-        </footer>
-      </div>
+      </HeaderFooter>
     );
-  };
-    
+
+};
+
+
 export default Dashboard;
+
 

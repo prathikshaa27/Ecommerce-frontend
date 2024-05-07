@@ -100,12 +100,14 @@
 
 // export default Signin;
 
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { signin } from '../services/api';
 import { useNavigate } from 'react-router-dom'; 
 import * as  S from './signin.styles'; 
+import {toast} from 'react-toastify'
 
 const Signin = () => {
   const { register, handleSubmit } = useForm();
@@ -116,6 +118,7 @@ const Signin = () => {
   const onSubmit = async (data) => {
     try {
       await mutation.mutateAsync(data);
+      toast.success('Logged in successfully')
       navigate('/dashboard'); 
     } catch (error) {
       console.error(error);
@@ -126,14 +129,14 @@ const Signin = () => {
     <S.FormContainer>
       <S.Title>Sign In</S.Title>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="username">Username</label>
+        <S.InputContainer>
+          <S.Label htmlFor="username">Username</S.Label>
           <S.Input type="text" id="username" {...register('username', { required: true })} />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
+        </S.InputContainer>
+        <S.InputContainer>
+          <S.Label htmlFor="password">Password</S.Label>
           <S.Input type="password" id="password" {...register('password', { required: true })} />
-        </div>
+        </S.InputContainer>
         <S.Button type="submit" disabled={mutation.isLoading}>
           {mutation.isLoading ? 'Signing in...' : 'Sign In'}
         </S.Button>

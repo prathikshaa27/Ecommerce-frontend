@@ -99,8 +99,11 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { signup } from '../services/api';
 import * as S from './signup.styles'; 
+import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify'
 
 const Signup = () => {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
   const mutation = useMutation(signup); 
@@ -108,6 +111,10 @@ const Signup = () => {
   const onSubmit = async data => {
     try {
       await mutation.mutateAsync(data);
+      navigate('/signin')
+      toast.success("Registration successful")
+
+
     } catch (error) {
       console.error(error);
     }

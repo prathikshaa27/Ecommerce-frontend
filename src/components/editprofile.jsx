@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { updateProfile, fetchUserProfile } from '../services/api';
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({
@@ -11,19 +11,18 @@ const EditProfile = () => {
   });
 
   useEffect(() => {
-    fetchUserProfile();
+    fetchUserProfileData();
   }, []);
 
-  const fetchUserProfile = async () => {
+  const fetchUserProfileData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/profile/', { withCredentials: true });
-      const userProfile = response.data;
+      const userProfileData = await fetchUserProfile(); 
       setFormData({
-        username: userProfile.username,
-        email: userProfile.email,
-        address: userProfile.profile.address,
-        pincode: userProfile.profile.pincode,
-        mobile: userProfile.profile.mobile
+        username: userProfileData.username,
+        email: userProfileData.email,
+        address: userProfileData.profile.address,
+        pincode: userProfileData.profile.pincode,
+        mobile: userProfileData.profile.mobile
       });
     } catch (error) {
       console.error('Error fetching user profile:', error);
@@ -36,8 +35,8 @@ const EditProfile = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      const response = await axios.put('http://localhost:8000/api/profile/', formData, { withCredentials: true });
-      console.log(response)
+      await updateProfile(formData);
+      console.log('Profile updated successfully');
     } catch (error) {
       console.error('Error updating user profile:', error);
     }

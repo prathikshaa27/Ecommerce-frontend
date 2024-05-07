@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts } from '../services/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
   const [categories, setCategories] = useState([]);
@@ -10,54 +12,50 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchCategories();
-    fetchAllProducts();
+    fetchCategoriesData();
+    fetchAllProductsData();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchCategoriesData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/categories/', { withCredentials: true });
-      setCategories(response.data);
+      const categoriesData = await fetchCategories();
+      setCategories(categoriesData);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
   };
 
-  const handleCategoryClick = async (categoryId) => {
+  const fetchAllProductsData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/categories/${categoryId}/`, { withCredentials: true });
-      console.log('Response data:', response.data);
-      if (response.data.length > 0) {
-        setProducts(response.data);
-      } else {
-        console.log('No products found for this category.');
-      }
-    } catch (error) {
-      console.error(`Error fetching products for category ${categoryId}:`, error);
-    }
-  }
-  
-  const fetchAllProducts = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/categories/products/', { withCredentials: true });
-      setProducts(response.data);
+      const productsData = await fetchAllProducts();
+      setProducts(productsData);
     } catch (error) {
       console.error('Error fetching products:', error);
+    }
+  };
+
+  const handleCategoryClick = async (categoryId) => {
+    try {
+      const productsData = await fetchProductsByCategory(categoryId);
+      setProducts(productsData);
+    } catch (error) {
+      console.error(`Error fetching products for category ${categoryId}:`, error);
     }
   };
 
   const handleSearch = async () => {
     if (searchQuery.trim() !== '') {
       try {
-        const response = await axios.get(`http://localhost:8000/api/search/?q=${searchQuery}`, { withCredentials: true });
-        setProducts(response.data);
+        const productsData = await searchProducts(searchQuery);
+        setProducts(productsData);
       } catch (error) {
         console.error('Error searching products:', error);
       }
     } else {
-      fetchAllProducts();
+      fetchAllProductsData();
     }
   };
+
   console.log('Products:', products);
 
   return (

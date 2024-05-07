@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserProfile } from '../services/api';
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
-    fetchUserProfile();
+    fetchUserProfileData();
   }, []);
 
-  const fetchUserProfile = async () => {
+  const fetchUserProfileData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/profile/', { withCredentials: true });
-      setUserProfile(response.data);
+      const userProfileData = await fetchUserProfile();
+      setUserProfile(userProfileData);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
@@ -34,7 +34,6 @@ const UserProfile = () => {
             <div>
               <p><strong>Username:</strong> {userProfile.username}</p>
               <p><strong>Email:</strong> {userProfile.email}</p>
-
               {userProfile.profile && (
                 <>
                   <p><strong>Address:</strong> {userProfile.profile.address}</p>

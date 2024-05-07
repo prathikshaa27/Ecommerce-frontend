@@ -8,21 +8,26 @@ import Dashboard from './components/dashboard';
 import ProductDetailPage from './components/productpage';
 import UserProfile from './components/profile';
 import EditProfile from './components/editprofile';
+import HeaderFooter from './components/headerfooter';
+import CartPage from './components/cart';
 
 function App() {
   return (
     <div>
-   
+    
       <Routes>
         <Route path="/" element={<HomePage/>}/>
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
          <Route path="/dashboard" element={<Dashboard/>}/> 
-         <Route path='/profile' element={<UserProfile/>}/>
-         <Route path='/editprofile' element={<EditProfile/>}/>
-         <Route path="/products/:productId" element={<ProductDetailPage/>}/>
+         <Route path='/profile' element={<HeaderFooter><UserProfile/></HeaderFooter>}/>
+         <Route path='/editprofile' element={<HeaderFooter><EditProfile/></HeaderFooter>}/>
+         <Route path="/products/:productId" element={<HeaderFooter><ProductDetailPage/></HeaderFooter>}/>
+          <Route path="/cart" element ={<CartPage/>}/> 
+      
         
       </Routes>
+   
     </div>
   );
 }
