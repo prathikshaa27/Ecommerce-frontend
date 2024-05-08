@@ -31,9 +31,9 @@ const HeaderFooter = ({ children }) => {
         </div>
       </header>
       <main className="mt-5 pt-4">{children}</main>
-      <footer className="footer fixed-bottom bg-dark text-white py-3">
+      <footer className="footer fixed-bottom bg-dark text-white py-2"> {/* Reduced padding from py-3 to py-2 */}
         <div className="container text-center">
-          <p>&copy; 2024 Shopify. All rights reserved.</p>
+          <p style={{ fontSize: '0.8rem' }}>&copy; 2024 Shopify. All rights reserved.</p> {/* Reduced font size */}
         </div>
       </footer>
     </>
@@ -41,5 +41,3 @@ const HeaderFooter = ({ children }) => {
 };
 
 export default HeaderFooter;
-
-

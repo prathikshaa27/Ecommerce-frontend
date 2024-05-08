@@ -184,7 +184,7 @@ export const fetchCartProducts = async () => {
         withCredentials: true,  
         headers: {
           'X-CSRFToken': csrftoken,  
-          'X-Requested-With': 'XMLHttpRequest' // 
+          'X-Requested-With': 'XMLHttpRequest'  
         }
       }
     );
@@ -193,6 +193,20 @@ export const fetchCartProducts = async () => {
     throw error;
   }
 };
-  
 
 
+export const placeOrder = async (orderData) => {
+  try {
+    const csrftoken = getCookie('csrftoken');
+    const response = await axios.post(`${BASE_URL}/orders/`, orderData, {
+      withCredentials: true,  
+      headers: {
+        'X-CSRFToken': csrftoken,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

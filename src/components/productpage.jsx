@@ -108,15 +108,15 @@ const ProductDetailPage = () => {
     }
   };
 
-  const handleRemoveFromCart = async () => {
-    try {
-      await removeFromCart(productId);
-      toast.success('Product removed from cart successfully!');
-    } catch (error) {
-      console.error('Error removing product from cart:', error);
-      toast.error('Failed to remove product from cart. Please try again.');
-    }
-  };
+  // const handleRemoveFromCart = async () => {
+  //   try {
+  //     await removeFromCart(productId);
+  //     toast.success('Product removed from cart successfully!');
+  //   } catch (error) {
+  //     console.error('Error removing product from cart:', error);
+  //     toast.error('Failed to remove product from cart. Please try again.');
+  //   }
+  // };
 
   return (
     <Container className="mt-5">
@@ -135,7 +135,7 @@ const ProductDetailPage = () => {
                 <Card.Text className="product-description">Description: {product.description}</Card.Text>
                 <div className="product-buttons">
                   <Button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</Button>
-                  <Button className="remove-from-cart-btn" onClick={handleRemoveFromCart}>Remove from Cart</Button>
+                  {/* <Button className="remove-from-cart-btn" onClick={handleRemoveFromCart}>Remove from Cart</Button> */}
                 </div>
               </Card.Body>
             </Card>
