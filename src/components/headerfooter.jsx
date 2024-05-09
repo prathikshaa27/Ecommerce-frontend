@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import './headerfooter.css'; 
 
 const HeaderFooter = ({ children }) => {
   return (
@@ -11,16 +12,16 @@ const HeaderFooter = ({ children }) => {
           <Link to="/" className="navbar-brand"><strong className="text-lg">Shopify</strong></Link>
           <nav className="ml-auto">
             <ul className="navbar-nav d-flex flex-row align-items-center">
-              <li className="nav-item mr-5">
+              <li className="nav-item mr-3">
                 <Link to="/profile" className="nav-link">
                   <FontAwesomeIcon icon={faUser} />
-                  &nbsp; User Profile
+                  <span className="nav-link-text">User Profile</span>
                 </Link>
               </li>
-              <li className="nav-item mr-5">
+              <li className="nav-item mr-3">
                 <Link to="/cart" className="nav-link">
                   <FontAwesomeIcon icon={faShoppingCart} />
-                  &nbsp; Cart
+                  <span className="nav-link-text">Cart</span>
                 </Link>
               </li>
               <li className="nav-item">
@@ -30,10 +31,10 @@ const HeaderFooter = ({ children }) => {
           </nav>
         </div>
       </header>
-      <main className="mt-5 pt-4">{children}</main>
-      <footer className="footer fixed-bottom bg-dark text-white py-2"> {/* Reduced padding from py-3 to py-2 */}
+      <main className="main-content">{children}</main>
+      <footer className="footer fixed-bottom bg-dark text-white py-2"> 
         <div className="container text-center">
-          <p style={{ fontSize: '0.8rem' }}>&copy; 2024 Shopify. All rights reserved.</p> {/* Reduced font size */}
+          <p>&copy; 2024 Shopify. All rights reserved.</p>
         </div>
       </footer>
     </>

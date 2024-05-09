@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -17,6 +18,7 @@ root.render(
      <QueryClientProvider client={queryClient}>
     <BrowserRouter>
     <App />
+    <ToastContainer/>
     </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>
@@ -26,3 +28,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+

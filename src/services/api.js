@@ -102,16 +102,32 @@ export const getProductDetails = async (productId) => {
     throw error;
   }
 };
-export const fetchProductsByCategoryWithFilter = async (categoryId, queryParams) => {
+
+export const getFilteredProducts = async (categoryId, minPrice, maxPrice) => {
   try {
-    const response = await axios.get(`${BASE_URL}categories/${categoryId}/`, {
-      params: queryParams,
+    // Get CSRF token from cookies
+    const csrftoken = getCookie('csrftoken');
+
+    // Make GET request to fetch filtered products
+    const response = await axios.get(`${BASE_URL}/categories/${categoryId}/`, {
+      params: {
+        min_price: minPrice,
+        max_price: maxPrice
+      },
+      withCredentials: true, // Ensure credentials are sent with the request
+      headers: {
+        'X-CSRFToken': csrftoken
+      }
     });
+
+    // Return the response data
     return response.data;
   } catch (error) {
+    // Throw error if request fails
     throw error;
   }
 };
+
 
 export const fetchUserProfile = async () => {
   try {
@@ -163,7 +179,7 @@ export const removeFromCart = async (productId) => {
         withCredentials: true,  
         headers: {
           'X-CSRFToken': csrftoken,  
-          'X-Requested-With': 'XMLHttpRequest' // 
+          'X-Requested-With': 'XMLHttpRequest' 
         }
       }
     );
