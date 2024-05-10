@@ -94,71 +94,26 @@
 
 // export default Signup;
 
-// import React from 'react';
-// import { useForm } from 'react-hook-form';
-// import { useMutation } from 'react-query';
-// import { signup } from '../services/api';
-// import * as S from './signup.styles'; 
-// import { useNavigate } from 'react-router-dom';
-// import {toast} from 'react-toastify'
-
-// const Signup = () => {
-//   const navigate = useNavigate();
-//   const { register, handleSubmit } = useForm();
-
-//   const mutation = useMutation(signup); 
-
-//   const onSubmit = async data => {
-//     try {
-//       await mutation.mutateAsync(data);
-//       navigate('/signin')
-//       toast.success("Registration successful")
-
-
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-
-//   return (
-//     <S.FormContainer>
-//       <S.Title>Signup</S.Title>
-//       <S.Form onSubmit={handleSubmit(onSubmit)}>
-//         <S.Input type="text" {...register('username', { required: true })} placeholder="Username" />
-//         <S.Input type="email" {...register('email', { required: true })} placeholder="Email" />
-//         <S.Input type="password" {...register('password', { required: true })} placeholder="Password" />
-//         <S.Input type="text" {...register('mobile', { required: true })} placeholder="Mobile" />
-//         <S.Input type="text" {...register('address', { required: true })} placeholder="Address" />
-//         <S.Input type="text" {...register('pincode', { required: true })} placeholder="Pincode" />
-//         <S.Button type="submit" disabled={mutation.isLoading}>
-//           {mutation.isLoading ? 'Signing up...' : 'Signup'}
-//         </S.Button>
-//       </S.Form>
-//     </S.FormContainer>
-//   );
-// };
-
-// export default Signup;
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { signup } from '../services/api';
-import * as S from './signup.styles'; 
+import * as S from './signup.styles';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import signupFields from './signupFields.json'; 
 
-const Signup = () => {
+const SignupForm = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const mutation = useMutation(signup); 
+  const mutation = useMutation(signup);
 
   const onSubmit = async data => {
     try {
       await mutation.mutateAsync(data);
       navigate('/signin');
-      toast.success("Registration successful. You can now sign in."); 
+      toast.success("Registration successful. You can now sign in.");
 
     } catch (error) {
       console.error(error);
@@ -169,12 +124,14 @@ const Signup = () => {
     <S.FormContainer>
       <S.Title>Signup</S.Title>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <S.Input type="text" {...register('username', { required: true })} placeholder="Username" />
-        <S.Input type="email" {...register('email', { required: true })} placeholder="Email" />
-        <S.Input type="password" {...register('password', { required: true })} placeholder="Password" />
-        <S.Input type="text" {...register('mobile', { required: true })} placeholder="Mobile" />
-        <S.Input type="text" {...register('address', { required: true })} placeholder="Address" />
-        <S.Input type="text" {...register('pincode', { required: true })} placeholder="Pincode" />
+        {signupFields.map(field => (
+          <S.Input
+            key={field.name}
+            type={field.type}
+            {...register(field.name, field.validation)}
+            placeholder={field.placeholder}
+          />
+        ))}
         <S.Button type="submit" disabled={mutation.isLoading}>
           {mutation.isLoading ? 'Signing up...' : 'Signup'}
         </S.Button>
@@ -183,4 +140,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupForm;

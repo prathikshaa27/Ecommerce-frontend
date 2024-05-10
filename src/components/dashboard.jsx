@@ -116,19 +116,20 @@
 
 // export default Dashboard;
 
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts } from '../services/api';
+import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts, getFilteredProducts } from '../services/api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HeaderFooter from './headerfooter';
-import './dashboard.css';
 
 const Dashboard = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null); // Define selectedCategory state
 
   useEffect(() => {
     fetchCategoriesData();
@@ -159,6 +160,7 @@ const Dashboard = () => {
     try {
       const productsData = await fetchProductsByCategory(categoryId);
       setProducts(productsData);
+      setSelectedCategory(categoryId); // Set selectedCategory when category is clicked
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
       toast.error('Failed to fetch products for selected category. Please try again later.');
@@ -179,17 +181,29 @@ const Dashboard = () => {
     }
   };
 
+  const handleFilter = async () => {
+    if (minPrice.trim() !== '' && maxPrice.trim() !== '') {
+      try {
+        const productsData = await getFilteredProducts(selectedCategory, minPrice, maxPrice);
+        setProducts(productsData);
+      } catch (error) {
+        console.error('Error filtering products:', error);
+        toast.error('Failed to filter products. Please try again later.');
+      }
+    }
+  };
+
   return (
     <HeaderFooter>
       <div className="container mt-4">
         <div className="row">
-          <div className="col-lg-3">
-            <div className="card categories-card">
+          <div className="col-lg-2">
+            <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Categories</h5>
                 <ul className="list-group">
                   {categories.map(category => (
-                    <li className="list-group-item" key={category.id}>
+                    <li className={`list-group-item ${selectedCategory === category.id ? 'active' : ''}`} key={category.id}>
                       <button className="btn btn-link" onClick={() => handleCategoryClick(category.id)}>
                         {category.name}
                       </button>
@@ -199,7 +213,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-9">
+          <div className="col-lg-10">
             <div className="input-group mb-3">
               <input
                 type="text"
@@ -210,12 +224,29 @@ const Dashboard = () => {
               />
               <button className="btn btn-primary" type="button" onClick={handleSearch}>Search</button>
             </div>
-            <div className="row">
+            <div className="input-group mb-3">
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Min Price"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+              />
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Max Price"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+              />
+              <button className="btn btn-primary" type="button" onClick={handleFilter}>Apply Filter</button>
+            </div>
+            <div className="row row-cols-1 row-cols-md-4 g-4">
               {products.map(product => (
-                <div className="col-md-4 mb-4" key={product.id}>
-                  <div className="card product-card">
+                <div className="col" key={product.id}>
+                  <div className="card h-100">
                     <Link to={`/products/${product.id}`} className="card-link">
-                      <img src={product.image_url} className="card-img-top" alt={product.product_name} />
+                      <img src={product.image_url} className="card-img-top" alt={product.product_name} style={{ height: '200px', objectFit: 'cover' }} />
                       <div className="card-body">
                         <h5 className="card-title">{product.product_name}</h5>
                         <p className="card-text">Price: ${product.amount}</p>
@@ -230,6 +261,8 @@ const Dashboard = () => {
       </div>
     </HeaderFooter>
   );
+
 };
+
 
 export default Dashboard;

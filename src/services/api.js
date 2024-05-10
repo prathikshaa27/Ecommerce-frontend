@@ -105,25 +105,19 @@ export const getProductDetails = async (productId) => {
 
 export const getFilteredProducts = async (categoryId, minPrice, maxPrice) => {
   try {
-    // Get CSRF token from cookies
     const csrftoken = getCookie('csrftoken');
-
-    // Make GET request to fetch filtered products
     const response = await axios.get(`${BASE_URL}/categories/${categoryId}/`, {
       params: {
         min_price: minPrice,
         max_price: maxPrice
       },
-      withCredentials: true, // Ensure credentials are sent with the request
+      withCredentials: true, 
       headers: {
         'X-CSRFToken': csrftoken
       }
     });
-
-    // Return the response data
     return response.data;
   } catch (error) {
-    // Throw error if request fails
     throw error;
   }
 };
@@ -131,14 +125,13 @@ export const getFilteredProducts = async (categoryId, minPrice, maxPrice) => {
 
 export const fetchUserProfile = async () => {
   try {
+    
     const response = await api.get('/profile/');
     return response.data;
   } catch (error) {
     throw error;
   }
 };
-
-
 
 
 export const updateProfile = async (formData) => {
@@ -221,6 +214,23 @@ export const placeOrder = async (orderData) => {
         'X-Requested-With': 'XMLHttpRequest',
       },
     });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchUserOrders = async () => {
+  try {
+    const csrftoken = getCookie('csrftoken');
+    const response = await axios.get(`${BASE_URL}/view_orders/`, {
+      withCredentials: true,  
+      headers: {
+        'X-CSRFToken': csrftoken,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
+    
     return response.data;
   } catch (error) {
     throw error;

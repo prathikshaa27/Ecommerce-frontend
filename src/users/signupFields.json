@@ -1,0 +1,39 @@
+[
+    {
+      "name": "username",
+      "type": "text",
+      "placeholder": "Username",
+      "validation": { "required": true }
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "placeholder": "Email",
+      "validation": { "required": true }
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "placeholder": "Password",
+      "validation": { "required": true }
+    },
+    {
+      "name": "mobile",
+      "type": "text",
+      "placeholder": "Mobile",
+      "validation": { "required": true }
+    },
+    {
+      "name": "address",
+      "type": "text",
+      "placeholder": "Address",
+      "validation": { "required": true }
+    },
+    {
+      "name": "pincode",
+      "type": "text",
+      "placeholder": "Pincode",
+      "validation": { "required": true }
+    }
+  ]
+  
