@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { getProductDetails, addToCart } from '../services/api';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetailPage = () => {
-  const navigate=useNavigate();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProductDetails();
-  },[] );
+  }, []);
 
   const fetchProductDetails = async () => {
     try {
@@ -25,15 +24,25 @@ const ProductDetailPage = () => {
   };
 
   const handleAddToCart = async () => {
-    try {
-      await addToCart(productId);
-      toast.success('Product added to cart successfully!');
-      navigate('./cart')
+    const isAuthenticated = document.cookie.includes('authToken');
 
+    if (!isAuthenticated) {
+      navigate('/home');
+      return;
+    }
+
+    try {
+      await addToCart(productId, quantity); 
+      toast.success('Product added to cart successfully!');
+      navigate(`/products/${productId}/cart`);
     } catch (error) {
       console.error('Error adding product to cart:', error);
       toast.error('Failed to add product to cart. Please try again.');
     }
+  };
+
+  const handleQuantityChange = (e) => {
+    setQuantity(parseInt(e.target.value)); 
   };
 
   return (
@@ -41,19 +50,21 @@ const ProductDetailPage = () => {
       {product ? (
         <Row>
           <Col md={6}>
-            <Card className="product-image-card">
+            <Card>
               <Card.Img variant="top" src={product.image_url} alt={product.product_name} />
             </Card>
           </Col>
           <Col md={6}>
-            <Card className="product-details-card">
+            <Card>
               <Card.Body>
-                <Card.Title className="product-name">{product.product_name}</Card.Title>
-                <Card.Text className="product-price">Price: ${product.amount}</Card.Text>
-                <Card.Text className="product-description">Description: {product.description}</Card.Text>
-                <div className="product-buttons">
-                  <Button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</Button>
-                </div>
+                <Card.Title>{product.product_name}</Card.Title>
+                <Card.Text>Price: ${product.amount}</Card.Text>
+                <Card.Text>Description: {product.description}</Card.Text>
+                <Form.Group controlId="quantity">
+                  <Form.Label>Quantity</Form.Label>
+                  <Form.Control type="number" value={quantity} onChange={handleQuantityChange} />
+                </Form.Group>
+                <Button onClick={handleAddToCart}>Add to Cart</Button>
               </Card.Body>
             </Card>
           </Col>

@@ -49,6 +49,20 @@ export const signin = async (data) => {
     throw error;
   }
 };
+export const logoutUser = async () => {
+  try {
+    const response = await axios.post(`${BASE_URL}/logout/`, {}, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const fetchCategories = async () => {
   try {
@@ -188,7 +202,7 @@ export const fetchCartProducts = async () => {
     const csrftoken = getCookie('csrftoken');
 
     const response = await axios.get(
-      `${BASE_URL}/orders/`,
+      `${BASE_URL}/view_cart/`,
       {
         withCredentials: true,  
         headers: {
@@ -213,6 +227,7 @@ export const placeOrder = async (orderData) => {
         'X-CSRFToken': csrftoken,
         'X-Requested-With': 'XMLHttpRequest',
       },
+      body: JSON.stringify(orderData)
     });
     return response.data;
   } catch (error) {

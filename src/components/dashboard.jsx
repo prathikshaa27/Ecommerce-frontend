@@ -160,7 +160,7 @@ const Dashboard = () => {
     try {
       const productsData = await fetchProductsByCategory(categoryId);
       setProducts(productsData);
-      setSelectedCategory(categoryId); // Set selectedCategory when category is clicked
+      setSelectedCategory(categoryId); 
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
       toast.error('Failed to fetch products for selected category. Please try again later.');

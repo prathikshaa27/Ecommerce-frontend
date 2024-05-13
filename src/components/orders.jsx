@@ -31,13 +31,13 @@ const Orders = () => {
               <div className="card">
                 <div className="row g-0">
                   <div className="col-md-4">
-                    <img src={order.product.image_url} className="img-fluid" alt={order.product.name} />
+                    <img src={order.image_url} className="img-fluid" alt={order.name} />
                   </div>
                   <div className="col-md-8">
                     <div className="card-body">
-                      <h5 className="card-title">{order.product.name}</h5>
-                      <p className="card-text">{order.product.description}</p>
-                      <p className="card-text">Quantity: {order.quantity}</p>
+                      <h5 className="card-title">{order.name}</h5>
+                      <p className="card-text">User: {order.user}</p>
+                      <p className="card-text">Product Name: {order.name}</p>
                     </div>
                   </div>
                 </div>

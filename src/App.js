@@ -5,7 +5,7 @@ import Signup from './users/signup.jsx'
 import Signin from './users/signin';
 import HomePage from './components/home';
 import Dashboard from './products/dashboard';
-import ProductDetailPage from './components/productpage';
+import ProductDetailPage from './components/product';
 import UserProfile from './components/profile';
 import EditProfile from './components/editprofile';
 import HeaderFooter from './components/headerfooter';
@@ -20,7 +20,8 @@ function App() {
         <Route path="/" element={<Dashboard/>}/>
         <Route path="/signupform" element={<Signup />} />
         <Route path="/signinform" element={<Signin />} />
-         <Route path="/dashboard" element={<Dashboard/>}/> 
+         <Route path="/home" element={<HomePage/>}/> 
+         <Route path="/dashboard" element ={<Dashboard/>}/>
          <Route path='/profile' element={<HeaderFooter><UserProfile/></HeaderFooter>}/>
          <Route path='/editprofile' element={<HeaderFooter><EditProfile/></HeaderFooter>}/>
          <Route path="/products/:productId" element={<HeaderFooter><ProductDetailPage/></HeaderFooter>}/>
@@ -35,3 +36,4 @@ function App() {
 }
 
 export default App;
+

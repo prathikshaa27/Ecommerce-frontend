@@ -2,38 +2,41 @@
 // import { useForm } from 'react-hook-form';
 // import { useMutation } from 'react-query';
 // import { signin } from '../services/api';
-// import { useNavigate } from 'react-router-dom'; 
-// import * as  S from './signin.styles'; 
+// import { useNavigate } from 'react-router-dom';
+// import * as S from './signin.styles';
 // import { toast } from 'react-toastify';
+// import signinFields from './signinFields.json'; 
 
-// const Signin = () => {
+// const SigninForm = () => {
 //   const { register, handleSubmit } = useForm();
-//   const navigate = useNavigate(); 
-  
+//   const navigate = useNavigate();
+
 //   const mutation = useMutation(signin);
-  
-//   const onSubmit = async (data) => {
+
+//   const onSubmit = async data => {
 //     try {
 //       await mutation.mutateAsync(data);
-//       toast.success('Logged in successfully'); 
-//       navigate('/dashboard'); 
+//       toast.success('Logged in successfully');
+//       navigate('/');
 //     } catch (error) {
 //       console.error(error);
 //     }
 //   };
-  
+
 //   return (
 //     <S.FormContainer>
 //       <S.Title>Sign In</S.Title>
 //       <S.Form onSubmit={handleSubmit(onSubmit)}>
-//         <S.InputContainer>
-//           <S.Label htmlFor="username">Username</S.Label>
-//           <S.Input type="text" id="username" {...register('username', { required: true })} />
-//         </S.InputContainer>
-//         <S.InputContainer>
-//           <S.Label htmlFor="password">Password</S.Label>
-//           <S.Input type="password" id="password" {...register('password', { required: true })} />
-//         </S.InputContainer>
+//         {signinFields.map(field => (
+//           <S.InputContainer key={field.name}>
+//             <S.Label htmlFor={field.name}>{field.label}</S.Label>
+//             <S.Input
+//               type={field.type}
+//               id={field.name}
+//               {...register(field.name, field.validation)}
+//             />
+//           </S.InputContainer>
+//         ))}
 //         <S.Button type="submit" disabled={mutation.isLoading}>
 //           {mutation.isLoading ? 'Signing in...' : 'Sign In'}
 //         </S.Button>
@@ -42,29 +45,42 @@
 //   );
 // };
 
-// export default Signin;
+// export default SigninForm;
 
+// signin.jsx
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { signin } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import * as S from './signin.styles';
 import { toast } from 'react-toastify';
-import signinFields from './signinFields.json'; 
+import signinFields from './signinFields.json'
 
 const SigninForm = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const mutation = useMutation(signin);
+  const mutation = useMutation(signin, {
+    onSuccess: (data) => {
+      setIsAuthenticated(true); // Update authentication state
+      // Set authentication token in cookies (replace 'authToken' with your actual token key)
+      document.cookie = `authToken=${data.token}; path=/`;
+      toast.success('Logged in successfully');
+      const productId = data.productId; 
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error('Failed to sign in. Please try again.');
+    }
+  });
 
   const onSubmit = async data => {
     try {
       await mutation.mutateAsync(data);
-      toast.success('Logged in successfully');
-      navigate('/dashboard');
     } catch (error) {
       console.error(error);
     }
@@ -74,7 +90,7 @@ const SigninForm = () => {
     <S.FormContainer>
       <S.Title>Sign In</S.Title>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        {signinFields.map(field => (
+      {signinFields.map(field => (
           <S.InputContainer key={field.name}>
             <S.Label htmlFor={field.name}>{field.label}</S.Label>
             <S.Input
@@ -87,6 +103,7 @@ const SigninForm = () => {
         <S.Button type="submit" disabled={mutation.isLoading}>
           {mutation.isLoading ? 'Signing in...' : 'Sign In'}
         </S.Button>
+      
       </S.Form>
     </S.FormContainer>
   );
