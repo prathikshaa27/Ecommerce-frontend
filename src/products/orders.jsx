@@ -18,10 +18,15 @@ const Orders = () => {
         setLoading(false);
       }
     }
-    setOrders([]); 
+
     fetchOrders();
+    const interval = setInterval(fetchOrders, 5 * 60 * 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []); 
-  
+
   return (
     <>
       <Header />
@@ -36,20 +41,21 @@ const Orders = () => {
                 <div className="card">
                   <div className="row g-0">
                     <div className="col-md-4">
-                      <img src={order.image_url} className="img-fluid" alt={order.name} />
+                      <img src={order.image_url} className="card-img" alt={order.name} />
                     </div>
                     <div className="col-md-8">
                       <div className="card-body">
                         <h5 className="card-title">{order.name}</h5>
                         <p className="card-text">Name: {order.user}</p>
                         <p className="card-text">Product Name: {order.name}</p>
+                        <p className="card-text order-status">Status: {order.status}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
+          </div> 
         )}
       </div>
       <Footer />

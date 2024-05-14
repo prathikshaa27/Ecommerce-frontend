@@ -1,0 +1,35 @@
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .card-img {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    margin-bottom: 5px;
+  }
+  
+  .order-status {
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    .card-img {
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+    }
+  }
+  
