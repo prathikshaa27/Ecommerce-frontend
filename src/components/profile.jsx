@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserProfile } from '../services/api';
+import { fetchUserProfile } from '@services/api';
+import Header from '@components/header'; 
+import Footer from '@components/footer'; 
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -13,7 +15,6 @@ const UserProfile = () => {
   const fetchUserProfileData = async () => {
     try {
       const userProfileData = await fetchUserProfile();
-      console.log(userProfileData)
       setUserProfile(userProfileData);
     } catch (error) {
       console.error('Error fetching user profile:', error);
@@ -25,29 +26,33 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card">
-        <div className="card-header bg-primary text-white">
-          <h3 className="mb-0">User Profile</h3>
-        </div>
-        <div className="card-body">
-          {userProfile && (
-            <div>
-              <p><strong>Username:</strong> {userProfile.username}</p>
-              <p><strong>Email:</strong> {userProfile.email}</p>
-              {userProfile.profile && (
-                <>
-                  <p><strong>Address:</strong> {userProfile.profile.address}</p>
-                  <p><strong>Pincode:</strong> {userProfile.profile.pincode}</p>
-                  <p><strong>Mobile:</strong> {userProfile.profile.mobile}</p>
-                </>
-              )}
-              <button className="btn btn-primary" onClick={handleEditProfile}>Edit Profile</button>
-            </div>
-          )}
+    <>
+      <Header /> 
+      <div className="container mt-5">
+        <div className="card">
+          <div className="card-header bg-primary text-white">
+            <h3 className="mb-0">User Profile</h3>
+          </div>
+          <div className="card-body">
+            {userProfile && (
+              <div>
+                <p><strong>Username:</strong> {userProfile.username}</p>
+                <p><strong>Email:</strong> {userProfile.email}</p>
+                {userProfile.profile && (
+                  <>
+                    <p><strong>Address:</strong> {userProfile.profile.address}</p>
+                    <p><strong>Pincode:</strong> {userProfile.profile.pincode}</p>
+                    <p><strong>Mobile:</strong> {userProfile.profile.mobile}</p>
+                  </>
+                )}
+                <button className="btn btn-primary" onClick={handleEditProfile}>Edit Profile</button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      <Footer /> 
+    </>
   );
 };
 

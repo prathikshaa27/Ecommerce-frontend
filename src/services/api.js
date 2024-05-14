@@ -150,6 +150,7 @@ export const fetchUserProfile = async () => {
 
 export const updateProfile = async (formData) => {
   try {
+    
     const response = await api.put('/profile/', formData);
     return response.data;
   } catch (error) {
