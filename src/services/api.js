@@ -212,8 +212,15 @@ export const fetchCartProducts = async () => {
         }
       }
     );
-    return response.data;
+
+    if (response && response.data) {
+      return response.data;
+    } else {
+      console.error('Invalid response format:', response);
+      throw new Error('Invalid response format');
+    }
   } catch (error) {
+    console.error('Error fetching cart products:', error);
     throw error;
   }
 };

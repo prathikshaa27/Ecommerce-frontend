@@ -6,6 +6,8 @@ import { getProductDetails, addToCart } from '@services/api';
 import Header from '@components/header'; 
 import Footer from '@components/footer'; 
 
+import './productdetailpage.css'
+
 const ProductDetailPage = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);

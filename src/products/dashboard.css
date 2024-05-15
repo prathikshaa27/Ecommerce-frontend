@@ -46,7 +46,7 @@
 }
 
 .product-card .card-img-top {
-  height: 200px;
+  height: 150px;
   object-fit: cover;
 }
 
@@ -69,4 +69,7 @@
 .product-card .btn-primary:hover {
   background-color: #0056b3;
   border-color: #0056b3;
+}
+.search-bar {
+  margin-top: 50px;
 }
