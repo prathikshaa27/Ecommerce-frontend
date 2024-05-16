@@ -3,12 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { signin } from '@services/api';
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 import signinFields from './signinFields.json';
 
 import * as S from './signin.styles';
 import { toast } from 'react-toastify';
-import './signinstyles.css'
+import './signinstyles.css';
 
 const SigninForm = () => {
   const { register, handleSubmit } = useForm();
@@ -52,7 +53,7 @@ const SigninForm = () => {
             />
             {field.name === 'password' && (
               <S.PasswordToggle onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? 'Hide' : 'Show'}
+                {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />} 
               </S.PasswordToggle>
             )}
           </S.InputContainer>

@@ -25,6 +25,9 @@ const SignupForm = () => {
 
   return (
     <div className="signup-container">
+      <div className="signup-image">
+        <img src="https://st.depositphotos.com/1001877/3814/i/450/depositphotos_38143799-stock-photo-e-commerce-shopping-cart-with.jpg" alt="Signup" />
+      </div>
       <div className="signup-form">
         <h2>Create an Account</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,9 +59,6 @@ const SignupForm = () => {
             {mutation.isLoading ? 'Signing up...' : 'Signup'}
           </button>
         </form>
-      </div>
-      <div className="signup-image">
-        <img src="https://st.depositphotos.com/1001877/3814/i/450/depositphotos_38143799-stock-photo-e-commerce-shopping-cart-with.jpg" alt="Signup" />
       </div>
     </div>
   );
