@@ -14,6 +14,7 @@ const CartPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [userProfile, setUserProfile] = useState(null);
+    const [deliveryAddress, setDeliveryAddress] = useState(''); 
 
     const userProfilePromise = useMemo(() => fetchUserProfile(), []); 
 
@@ -49,7 +50,12 @@ const CartPage = () => {
 
     const handlePlaceOrderClick = async () => {
         try {
-            await placeOrder();
+            if (!deliveryAddress) {
+                toast.error('Please select a delivery address.');
+                return;
+            }
+
+            await placeOrder(deliveryAddress); 
             toast.success('Order placed successfully!');
             navigate('/'); 
         } catch (error) {
@@ -115,15 +121,19 @@ const CartPage = () => {
                         {userProfile && (
                             <div>
                                 <h4>User Profile</h4>
-                                <p><strong>Username:</strong> {userProfile.username}</p>
-                                {userProfile.profile && (
-                                    <>
-                                        <p><strong>Mobile:</strong> {userProfile.profile.mobile}</p>
-                                        <p><strong>Address:</strong> {userProfile.profile.address}</p>
-                                        <p><strong>Pincode:</strong> {userProfile.profile.pincode}</p>
-                                        <p><strong>Total Price:</strong> ${totalPrice}</p>
-                                    </>
-                                )}
+                                <p><strong> Name:</strong> {userProfile.username}</p>
+                                <p><strong>Mobile:</strong> {userProfile.profile.mobile}</p>
+                                <p><strong>Pincode:</strong>{userProfile.profile.pincode}</p>
+                                <Form.Group controlId="deliveryAddress">
+                                    <Form.Label>Select Delivery Address</Form.Label>
+                                    <Form.Control as="select" onChange={(e) => setDeliveryAddress(e.target.value)}>
+                                        <option value="">Select Address</option>
+                                        {userProfile.profile.addresses.map((address, index) => (
+                                            <option key={index} value={address}>{address}</option>
+                                        ))}
+                                    </Form.Control>
+                                </Form.Group>
+                                <p><strong>Total Price:</strong> ${totalPrice}</p>
                                 <Button
                                     variant="primary"
                                     onClick={handlePlaceOrderClick}
@@ -142,4 +152,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-

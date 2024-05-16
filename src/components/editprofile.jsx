@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { updateProfile, fetchUserProfile } from '@services/api';
 import Header from '@components/header';
 import Footer from '@components/footer'; 
@@ -8,11 +9,13 @@ const EditProfile = () => {
     username: '',
     email: '',
     profile: {
-      address: '',
+      address: '', 
       pincode: '',
-      mobile: ''
+      mobile: '',
+      addresses: [], 
     }
   });
+  const [showNewAddressField, setShowNewAddressField] = useState(false); 
 
   useEffect(() => {
     fetchUserProfileData();
@@ -21,29 +24,35 @@ const EditProfile = () => {
   const fetchUserProfileData = async () => {
     try {
       const userProfileData = await fetchUserProfile(); 
+      userProfileData.profile.addresses = userProfileData.profile.addresses || []; 
       setFormData(userProfileData);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
   };
-
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const [fieldName, nestedFieldName] = name.split('.'); 
-  
-    if (nestedFieldName) {
+
+    if (name.startsWith('profile.')) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [fieldName]: { ...prevFormData[fieldName], [nestedFieldName]: value } 
+        profile: {
+          ...prevFormData.profile,
+          [name.split('.')[1]]: value
+        }
       }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: value 
+        [name]: value
       }));
     }
   };
   
+  const handleAddAddress = () => {
+    setShowNewAddressField(true); 
+  };
 
   const handleUpdateProfile = async () => {
     try {
@@ -74,8 +83,26 @@ const EditProfile = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="address" className="form-label">Address</label>
-                <input type="text" className="form-control" id="address" name="profile.address" value={formData.profile.address} onChange={handleInputChange} />
+                <select className="form-select" name="profile.address" value={formData.profile.address} onChange={handleInputChange}>
+                  <option value="">Select Address</option>
+                  {formData.profile.address && <option value={formData.profile.address}>{formData.profile.address}</option>}
+                  {formData.profile.addresses.map((address, index) => (
+                    <option key={index} value={address}>{address}</option>
+                  ))}
+                </select>
               </div>
+              <button type="button" className="btn btn-success mb-3" onClick={handleAddAddress}>Add Address</button>
+              {showNewAddressField && ( 
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name={`profile.addresses.${formData.profile.addresses.length}`}
+                    value={formData.profile.addresses[formData.profile.addresses.length - 1] || ''} 
+                    onChange={handleInputChange}
+                  />
+                </div>
+              )}
               <div className="mb-3">
                 <label htmlFor="pincode" className="form-label">Pincode</label>
                 <input type="text" className="form-control" id="pincode" name="profile.pincode" value={formData.profile.pincode} onChange={handleInputChange} />

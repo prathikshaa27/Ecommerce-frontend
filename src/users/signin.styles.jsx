@@ -48,3 +48,9 @@ export const Button = styled.button`
     background-color: #0056b3;
   }
 `;
+
+export const PasswordToggle = styled.span`
+  cursor: pointer;
+  color: #007bff;
+  margin-left: 5px;
+`;
