@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-toastify/dist/ReactToastify.css";
+import { AuthProvider } from './users/authcontext';
 
 
 const queryClient = new QueryClient();
@@ -17,7 +18,9 @@ root.render(
   <React.StrictMode>
      <QueryClientProvider client={queryClient}>
     <BrowserRouter>
+    <AuthProvider>
     <App />
+    </AuthProvider>
     <ToastContainer/>
     </BrowserRouter>
     </QueryClientProvider>

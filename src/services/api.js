@@ -120,7 +120,7 @@ export const getProductDetails = async (productId) => {
 export const getFilteredProducts = async (categoryId, minPrice, maxPrice) => {
   try {
     const csrftoken = getCookie('csrftoken');
-    const response = await axios.get(`${BASE_URL}/categories/${categoryId}/`, {
+    const response = await axios.get(`${BASE_URL}/category-price-filter/`, {
       params: {
         min_price: minPrice,
         max_price: maxPrice
@@ -254,6 +254,16 @@ export const fetchUserOrders = async () => {
       },
     });
     
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const checkSession = async () => {
+  try {
+    const response = await api.get('/check/session/');
     return response.data;
   } catch (error) {
     throw error;

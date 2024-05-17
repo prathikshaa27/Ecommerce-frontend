@@ -46,3 +46,26 @@
     padding-top: 2rem;
   }
 }
+
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.form-inline {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.input-group {
+  width: 50%;
+}
+
+.nav-link {
+  color: white;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}

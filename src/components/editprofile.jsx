@@ -20,16 +20,26 @@ const EditProfile = () => {
   useEffect(() => {
     fetchUserProfileData();
   }, []);
-
   const fetchUserProfileData = async () => {
     try {
       const userProfileData = await fetchUserProfile(); 
-      userProfileData.profile.addresses = userProfileData.profile.addresses || []; 
+      if (userProfileData.profile) {
+        userProfileData.profile.addresses = Array.isArray(userProfileData.profile.addresses) ? userProfileData.profile.addresses : [];
+      } else {
+        userProfileData.profile = {
+          address: '', 
+          pincode: '',
+          mobile: '',
+          addresses: [], 
+        };
+      }
       setFormData(userProfileData);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
   };
+  
+  
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -47,6 +47,7 @@ const Orders = () => {
         <div className="col-md-8">
           <div className="card-body">
             <h5 className="card-title">Ordered By: {order.user_name}</h5>
+            <p>Price:{order.total_amount}</p>
             <p className="card-text">Status: {order.status}</p>
           </div>
         </div>
