@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { updateProfile, fetchUserProfile } from '@services/api';
 import Header from '@components/header';
-import Footer from '@components/footer'; 
+import Footer from '@components/footer';
+import './editprofile.css';
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({
@@ -15,22 +16,24 @@ const EditProfile = () => {
       addresses: [], 
     }
   });
-  const [showNewAddressField, setShowNewAddressField] = useState(false); 
+  const [newAddress, setNewAddress] = useState('');
+  const [showNewAddressField, setShowNewAddressField] = useState(false);
 
   useEffect(() => {
     fetchUserProfileData();
   }, []);
+
   const fetchUserProfileData = async () => {
     try {
-      const userProfileData = await fetchUserProfile(); 
+      const userProfileData = await fetchUserProfile();
       if (userProfileData.profile) {
         userProfileData.profile.addresses = Array.isArray(userProfileData.profile.addresses) ? userProfileData.profile.addresses : [];
       } else {
         userProfileData.profile = {
-          address: '', 
+          address: '',
           pincode: '',
           mobile: '',
-          addresses: [], 
+          addresses: [],
         };
       }
       setFormData(userProfileData);
@@ -38,9 +41,7 @@ const EditProfile = () => {
       console.error('Error fetching user profile:', error);
     }
   };
-  
-  
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -59,9 +60,30 @@ const EditProfile = () => {
       }));
     }
   };
-  
+
   const handleAddAddress = () => {
-    setShowNewAddressField(true); 
+    setShowNewAddressField(true);
+  };
+
+  const handleNewAddressChange = (e) => {
+    setNewAddress(e.target.value);
+  };
+
+  const handleSaveNewAddress = () => {
+    if (newAddress.trim()) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        profile: {
+          ...prevFormData.profile,
+          addresses: [...prevFormData.profile.addresses, newAddress],
+          address: newAddress,
+        }
+      }));
+      setNewAddress('');
+      setShowNewAddressField(false);
+    } else {
+      console.error('New address is empty.');
+    }
   };
 
   const handleUpdateProfile = async () => {
@@ -76,49 +98,49 @@ const EditProfile = () => {
   return (
     <>
       <Header />
-      <div className="container mt-5">
-        <div className="card">
-          <div className="card-header bg-primary text-white">
-            <h3 className="mb-0">Edit Profile</h3>
+      <div className="container edit-profile-container mt-5">
+        <div className="edit-profile-card">
+          <div className="edit-profile-header">
+            <h3>Edit Profile</h3>
           </div>
-          <div className="card-body">
+          <div className="edit-profile-body">
             <form>
-              <div className="mb-3">
-                <label htmlFor="username" className="form-label">Username</label>
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
                 <input type="text" className="form-control" id="username" name="username" value={formData.username} onChange={handleInputChange} />
               </div>
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">Email</label>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
                 <input type="email" className="form-control" id="email" name="email" value={formData.email} onChange={handleInputChange} />
               </div>
-              <div className="mb-3">
-                <label htmlFor="address" className="form-label">Address</label>
-                <select className="form-select" name="profile.address" value={formData.profile.address} onChange={handleInputChange}>
+              <div className="form-group">
+                <label htmlFor="address">Address</label>
+                <select className="form-control" name="profile.address" value={formData.profile.address} onChange={handleInputChange}>
                   <option value="">Select Address</option>
-                  {formData.profile.address && <option value={formData.profile.address}>{formData.profile.address}</option>}
                   {formData.profile.addresses.map((address, index) => (
                     <option key={index} value={address}>{address}</option>
                   ))}
                 </select>
               </div>
               <button type="button" className="btn btn-success mb-3" onClick={handleAddAddress}>Add Address</button>
-              {showNewAddressField && ( 
-                <div className="mb-3">
+              {showNewAddressField && (
+                <div className="form-group new-address-group">
                   <input
                     type="text"
                     className="form-control"
-                    name={`profile.addresses.${formData.profile.addresses.length}`}
-                    value={formData.profile.addresses[formData.profile.addresses.length - 1] || ''} 
-                    onChange={handleInputChange}
+                    value={newAddress}
+                    onChange={handleNewAddressChange}
+                    placeholder="Enter new address"
                   />
+                  <button type="button" className="btn btn-primary" onClick={handleSaveNewAddress}>Save Address</button>
                 </div>
               )}
-              <div className="mb-3">
-                <label htmlFor="pincode" className="form-label">Pincode</label>
+              <div className="form-group">
+                <label htmlFor="pincode">Pincode</label>
                 <input type="text" className="form-control" id="pincode" name="profile.pincode" value={formData.profile.pincode} onChange={handleInputChange} />
               </div>
-              <div className="mb-3">
-                <label htmlFor="mobile" className="form-label">Mobile</label>
+              <div className="form-group">
+                <label htmlFor="mobile">Mobile</label>
                 <input type="text" className="form-control" id="mobile" name="profile.mobile" value={formData.profile.mobile} onChange={handleInputChange} />
               </div>
               <button type="button" className="btn btn-primary" onClick={handleUpdateProfile}>Save Changes</button>

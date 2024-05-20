@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { getProductDetails, addToCart } from '@services/api';
 import Header from '@components/header'; 
 import Footer from '@components/footer'; 
-
-import './productdetailpage.css'
+import './productdetailpage.css';
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
@@ -40,7 +39,6 @@ const ProductDetailPage = () => {
     try {
       await addToCart(productId, quantity);
       toast.success('Product added to cart successfully!');
-
       navigate(`/products/${productId}/cart`, { state: { totalPrice } });
     } catch (error) {
       console.error('Error adding product to cart:', error);
@@ -57,28 +55,26 @@ const ProductDetailPage = () => {
   return (
     <>
       <Header />
-      <Container className="mt-5">
+      <Container className="product-detail-container mt-5">
         {product ? (
           <Row>
             <Col md={6}>
-              <Card>
-                <Card.Img variant="top" src={product.image_url} alt={product.product_name} />
-              </Card>
+              <div className="product-image-container">
+                <img src={product.image_url} alt={product.product_name} className="product-image" />
+              </div>
             </Col>
             <Col md={6}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>{product.product_name}</Card.Title>
-                  <Card.Text>Price: ${product.amount}</Card.Text>
-                  <Card.Text>Total Price: ${totalPrice}</Card.Text> 
-                  <Card.Text>Description: {product.description}</Card.Text>
-                  <Form.Group controlId="quantity">
-                    <Form.Label>Quantity</Form.Label>
-                    <Form.Control type="number" value={quantity} onChange={handleQuantityChange} />
-                  </Form.Group>
-                  <Button onClick={handleAddToCart}>Add to Cart</Button>
-                </Card.Body>
-              </Card>
+              <div className="product-details">
+                <h2 className="product-title">{product.product_name}</h2>
+                <p className="product-price">Price: ${product.amount}</p>
+                <p className="total-price">Total Price: ${totalPrice}</p> 
+                <p className="product-description">Description: {product.description}</p>
+                <Form.Group controlId="quantity" className="quantity-group">
+                  <Form.Label>Quantity</Form.Label>
+                  <Form.Control type="number" value={quantity} onChange={handleQuantityChange} />
+                </Form.Group>
+                <Button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</Button>
+              </div>
             </Col>
           </Row>
         ) : (

@@ -21,11 +21,6 @@ const Orders = () => {
     }
 
     fetchOrders();
-    const interval = setInterval(fetchOrders, 5 * 60 * 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
   }, []); 
 
   return (
@@ -35,28 +30,29 @@ const Orders = () => {
         <h2 className="mb-4">Your Orders</h2>
         {loading ? (
           <p>Loading...</p>
+        ) : orders.length === 0 ? (
+          <p>There are no orders.</p>
         ) : (
           <div className="row">
             {orders.map((order) => (
-  <div className="col-md-12 mb-4" key={order.id}>
-    <div className="card">
-      <div className="row g-0">
-        <div className="col-md-4">
-          <img src={order.product_image_url} className="card-img" alt="Product" />
-        </div>
-        <div className="col-md-8">
-          <div className="card-body">
-            <h5 className="card-title">Ordered By: {order.user_name}</h5>
-            <p>Price:{order.total_amount}</p>
-            <p className="card-text">Status: {order.status}</p>
+              <div className="col-md-12 mb-4" key={order.id}>
+                <div className="card">
+                  <div className="row g-0">
+                    <div className="col-md-4">
+                      <img src={order.product_image_url} className="card-img" alt="Product" />
+                    </div>
+                    <div className="col-md-8">
+                      <div className="card-body">
+                        <h5 className="card-title">Ordered By: {order.user_name}</h5>
+                        <p>Price: {order.total_amount}</p>
+                        <p className="card-text">Status: {order.status}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-))}
-
-          </div> 
         )}
       </div>
       <Footer />
@@ -65,5 +61,3 @@ const Orders = () => {
 };
 
 export default Orders;
-
-

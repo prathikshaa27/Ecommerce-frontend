@@ -117,24 +117,28 @@ export const getProductDetails = async (productId) => {
   }
 };
 
-export const getFilteredProducts = async (categoryId, minPrice, maxPrice) => {
+export const getFilteredProducts = async (category, minPrice, maxPrice) => {
   try {
-    const csrftoken = getCookie('csrftoken');
+    const csrftoken = getCookie('csrftoken'); 
     const response = await axios.get(`${BASE_URL}/category-price-filter/`, {
       params: {
+        category,
         min_price: minPrice,
         max_price: maxPrice
       },
-      withCredentials: true, 
+      withCredentials: true,
       headers: {
-        'X-CSRFToken': csrftoken
-      }
+        'X-CSRFToken': csrftoken,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
     });
-    return response.data;
+    return response.data.products;
   } catch (error) {
+    console.error('Error fetching filtered products:', error);
     throw error;
   }
 };
+
 
 
 export const fetchUserProfile = async () => {
@@ -154,9 +158,10 @@ export const updateProfile = async (formData) => {
     const response = await api.put('/profile/', formData);
     return response.data;
   } catch (error) {
-    throw error;
+    throw error  ;
   }
 };
+
 export const addToCart = async (productId) => {
   try {
     const csrftoken = getCookie('csrftoken');
@@ -261,11 +266,12 @@ export const fetchUserOrders = async () => {
 };
 
 
-export const checkSession = async () => {
+export const checkAuthentication = async () => {
   try {
-    const response = await api.get('/check/session/');
-    return response.data;
+    const response = await axios.get('/api/check/session/');
+    return response.data.authenticated;
   } catch (error) {
-    throw error;
+    console.error('Error checking authentication:', error);
+    return false;
   }
 };

@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
+import {Form} from 'react-bootstrap';
 import { fetchCartProducts, removeFromCart, placeOrder, fetchUserProfile } from '../services/api';
 import Header from '@components/header.jsx'; 
 import Footer from '@components/footer.jsx'; 
-
-import 'react-toastify/dist/ReactToastify.css';
-import { Button, Card, Container, Row, Col, Form } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
+import CartItem from './cartitem';
 
 const CartPage = () => {
-    const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [userProfile, setUserProfile] = useState(null);
     const [deliveryAddress, setDeliveryAddress] = useState(''); 
+    const navigate = useNavigate();
 
-    const userProfilePromise = useMemo(() => fetchUserProfile(), []); 
+    const userProfilePromise = useMemo(() => fetchUserProfile(), []);
 
     useEffect(() => {
         fetchCartItems();
@@ -91,28 +90,12 @@ const CartPage = () => {
                         ) : (
                             <>
                                 {cartItems.map(item => (
-                                    <Card key={item.product_id} className="mb-4">
-                                        <Card.Img
-                                            variant="top"
-                                            src={item.image_url}
-                                            alt={item.product_name}
-                                            style={{ maxHeight: '100px', maxWidth: '200px', objectFit: 'cover' }}
-                                        />
-                                        <Card.Body>
-                                            <Card.Title>{item.product_name}</Card.Title>
-                                            <Card.Text>Description: {item.description}</Card.Text>
-                                            <Card.Text>Price: ${item.amount}</Card.Text>
-                                            <Form.Group controlId={`quantity-${item.product_id}`}>
-                                                <Form.Label>Quantity</Form.Label>
-                                                <Form.Control 
-                                                    type="number" 
-                                                    value={item.quantity} 
-                                                    onChange={(e) => handleQuantityChange(item.product_id, parseInt(e.target.value))} 
-                                                />
-                                            </Form.Group>
-                                            <Button variant="danger" onClick={() => handleRemoveFromCart(item.product_id)}>Remove from Cart</Button>
-                                        </Card.Body>
-                                    </Card>
+                                    <CartItem 
+                                      key={item.product_id} 
+                                      item={item} 
+                                      onQuantityChange={handleQuantityChange} 
+                                      onRemoveFromCart={handleRemoveFromCart} 
+                                    />
                                 ))}
                             </>
                         )}
@@ -121,7 +104,7 @@ const CartPage = () => {
                         {userProfile && (
                             <div>
                                 <h4>User Profile</h4>
-                                <p><strong> Name:</strong> {userProfile.username}</p>
+                                <p><strong>Name:</strong> {userProfile.username}</p>
                                 <p><strong>Mobile:</strong> {userProfile.profile.mobile}</p>
                                 <p><strong>Pincode:</strong>{userProfile.profile.pincode}</p>
                                 <Form.Group controlId="deliveryAddress">
@@ -152,3 +135,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+

@@ -1,27 +1,27 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { signup } from '@services/api';
-import { useNavigate } from 'react-router-dom';
-import signupFields from './signupFields.json';
 import { toast } from 'react-toastify';
-import './styles.css';
-import { useAuth } from './authcontext';
+import { useNavigate } from 'react-router-dom';
 
-const SignupForm = () => {
-  const navigate = useNavigate();
+import { signup } from '@services/api';
+import signupFields from './signupFields.json';
+
+import './styles.css';
+
+const SignupForm = ({ onSuccessfulSignup }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { login } = useAuth(); 
+  const navigate = useNavigate();
 
   const mutation = useMutation(signup, {
-    onSuccess: (data) => {
-      localStorage.setItem('accessToken', data.token);
-      login();  
-      navigate('/'); 
-      toast.success("Registration successful. You are now logged in.");
+    onSuccess: () => {
+      toast.success("Registration successful. You can now sign in.");
+      onSuccessfulSignup(); 
+      navigate('./') 
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to sign up. Please try again.");
+      toast.error('Failed to sign up. Please try again.');
     }
   });
 
@@ -43,37 +43,24 @@ const SignupForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           {signupFields.map(field => (
             <div key={field.name} className="form-group">
-              <label htmlFor={field.name}>{field.placeholder}</label>
+              <label htmlFor={field.name}>{field.label}</label>
               <input
                 type={field.type}
                 id={field.name}
                 {...register(field.name, {
                   required: field.validation.required,
-                  pattern: field.name === 'email'
-                    ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-                    : field.name === 'mobile'
-                      ? /^[0-9]{10}$/
-                      : field.name === 'pincode'
-                        ? /^[0-9]{6}$/
-                        : field.name === 'username'
-                          ? /^[a-zA-Z0-9]+$/
-                          : field.name === 'password'
-                            ? /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
-                            : null,
+                  minLength: field.validation.minLength,
+                  maxLength: field.validation.maxLength,
+                  pattern: field.validation.pattern,
                 })}
                 placeholder={field.placeholder}
               />
               {errors[field.name] && (
                 <span className="error">
                   {errors[field.name].type === "required" && "This field is required."}
-                  {errors[field.name].type === "pattern" && (
-                    field.name === 'email' ? "Invalid email address." :
-                    field.name === 'mobile' ? "Mobile number should contain 10 digits." :
-                    field.name === 'pincode' ? "Pincode should contain 6 digits." :
-                    field.name === 'username' ? "Username should contain only letters and numbers." :
-                    field.name === 'password' ? "Password should be at least 8 characters long and contain at least one letter and one number." :
-                    null
-                  )}
+                  {errors[field.name].type === "minLength" && `Minimum length is ${field.validation.minLength}.`}
+                  {errors[field.name].type === "maxLength" && `Maximum length is ${field.validation.maxLength}.`}
+                  {errors[field.name].type === "pattern" && "Invalid input."}
                 </span>
               )}
             </div>

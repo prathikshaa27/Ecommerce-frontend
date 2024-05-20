@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUserProfile } from '@services/api';
 import Header from '@components/header'; 
 import Footer from '@components/footer'; 
+import './profile.css'
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -29,14 +30,14 @@ const UserProfile = () => {
   return (
     <>
       <Header /> 
-      <div className="container mt-5">
-        <div className="card">
-          <div className="card-header bg-primary text-white">
-            <h3 className="mb-0">User Profile</h3>
+      <div className="container profile-container mt-5">
+        <div className="profile-card">
+          <div className="profile-header">
+            <h3>User Profile</h3>
           </div>
-          <div className="card-body">
+          <div className="profile-body">
             {userProfile && (
-              <div>
+              <div className="profile-details">
                 <p><strong>Username:</strong> {userProfile.username}</p>
                 <p><strong>Email:</strong> {userProfile.email}</p>
                 {userProfile.profile && (
@@ -46,7 +47,7 @@ const UserProfile = () => {
                     <p><strong>Mobile:</strong> {userProfile.profile.mobile}</p>
                   </>
                 )}
-                <button className="btn btn-primary" onClick={handleEditProfile}>Edit Profile</button>
+                <button className="edit-button" onClick={handleEditProfile}>Edit Profile</button>
               </div>
             )}
           </div>

@@ -1,19 +1,21 @@
 import React from 'react';
+import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import './productdesign.css';
 
 const Product = ({ product }) => {
   return (
-    <div className="col" key={product.id}>
-      <div className="card h-100">
+    <Card className="product-card">
+      <div className="product-image-container">
         <Link to={`/products/${product.id}`} className="card-link">
-          <img src={product.image_url} className="card-img-top" alt={product.product_name} style={{ height: '200px', objectFit: 'cover' }} />
-          <div className="card-body">
-            <h5 className="card-title">{product.product_name}</h5>
-            <p className="card-text">Price: ${product.amount}</p>
-          </div>
+          <Card.Img variant="top" src={product.image_url} className="product-image" />
         </Link>
       </div>
-    </div>
+      <Card.Body>
+        <Card.Title className="product-title">{product.product_name}</Card.Title>
+        <Card.Text className="product-price">${product.amount}</Card.Text>
+      </Card.Body>
+    </Card>
   );
 };
 
