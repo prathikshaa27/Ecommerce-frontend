@@ -39,7 +39,7 @@ const ProductDetailPage = () => {
     try {
       await addToCart(productId, quantity);
       toast.success('Product added to cart successfully!');
-      navigate(`/products/${productId}/cart`, { state: { totalPrice } });
+      navigate('/cart', { state: { totalPrice } });
     } catch (error) {
       console.error('Error adding product to cart:', error);
       toast.error('Failed to add product to cart. Please try again.');
@@ -87,3 +87,4 @@ const ProductDetailPage = () => {
 };
 
 export default ProductDetailPage;
+

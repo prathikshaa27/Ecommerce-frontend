@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const FormContainer = styled.div`
   max-width: 400px;
   margin: 0 auto;
+  padding : 120px
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +30,7 @@ export const Input = styled.input`
 
 export const Button = styled.button`
   margin-top: 10px;
-  padding: 12px 120px; 
+  padding: 20px 120px; 
   background-color: #007bff;
   color: #fff;
   border: none;

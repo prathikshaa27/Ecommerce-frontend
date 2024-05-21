@@ -57,3 +57,18 @@
     flex-direction: column;
   }
 }
+
+.status-processing {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-in-transit {
+  color: blue;
+  font-weight: bold;
+}
+
+.status-delivered {
+  color: green;
+  font-weight: bold;
+}

@@ -54,5 +54,14 @@
   "devDependencies": {
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.2.1"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@services/(.*)$": "<rootDir>/src/services/$1",
+      "^@components/(.*)$": "<rootDir>/src/components/$1",
+      "^@users/(.*)$": "<rootDir>/src/users/$1"
+    }
   }
 }
+
+

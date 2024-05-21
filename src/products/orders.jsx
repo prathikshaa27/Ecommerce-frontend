@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
 import { fetchUserOrders } from '../services/api';
 import Header from '@components/header';
 import Footer from '@components/footer';
+import './orders.css';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -22,6 +22,19 @@ const Orders = () => {
 
     fetchOrders();
   }, []); 
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'processing':
+        return 'status-processing';
+      case 'in_transit':
+        return 'status-in-transit';
+      case 'delivered':
+        return 'status-delivered';
+      default:
+        return '';
+    }
+  };
 
   return (
     <>
@@ -45,7 +58,7 @@ const Orders = () => {
                       <div className="card-body">
                         <h5 className="card-title">Ordered By: {order.user_name}</h5>
                         <p>Price: {order.total_amount}</p>
-                        <p className="card-text">Status: {order.status}</p>
+                        <p className={`card-text ${getStatusClass(order.status)}`}>Status: {order.status}</p>
                       </div>
                     </div>
                   </div>
@@ -61,3 +74,4 @@ const Orders = () => {
 };
 
 export default Orders;
+
