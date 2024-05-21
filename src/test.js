@@ -21,19 +21,19 @@ jest.mock('../services/api', () => ({
 }));
 
 const mockUserProfile = {
-  username: 'John Doe',
+  username: 'Ramya',
   profile: {
-    mobile: '1234567890',
-    pincode: '123456',
-    address: '123 Main St',
-    addresses: ['123 Main St', '456 Secondary St'],
+    mobile: '9761245678',
+    pincode: '654123',
+    address: 'No 7 Main street Chennai',
+    addresses: ['No 10 Main street Karur'],
   },
 };
 
 const mockCartItems = {
   cart_items: [
-    { product_id: 1, name: 'Product 1', amount: 10, quantity: 1 },
-    { product_id: 2, name: 'Product 2', amount: 20, quantity: 2 },
+    { product_id: 1, name: 'Samsung A30', amount: 18000, quantity: 1 },
+    { product_id: 2, name: 'Vivo y21', amount: 20000, quantity: 2 },
   ],
   total_amount: 50,
 };
@@ -57,16 +57,16 @@ describe('CartPage', () => {
 
 
     await waitFor(() => {
-      expect(screen.getByText('Product 1')).toBeInTheDocument();
-      expect(screen.getByText('Product 2')).toBeInTheDocument();
-      expect(screen.getByText('$50')).toBeInTheDocument();
+      expect(screen.getByText('Samsung A30')).toBeInTheDocument();
+      expect(screen.getByText('Vivo Y21')).toBeInTheDocument();
+      expect(screen.getByText('38000')).toBeInTheDocument();
     });
 
     
     await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-      expect(screen.getByText('1234567890')).toBeInTheDocument();
-      expect(screen.getByText('123 Main St')).toBeInTheDocument();
+      expect(screen.getByText('Ramya')).toBeInTheDocument();
+      expect(screen.getByText('9761245678')).toBeInTheDocument();
+      expect(screen.getByText('No 7 Main street Chennai')).toBeInTheDocument();
     });
   });
 
@@ -80,7 +80,7 @@ describe('CartPage', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Product 1')).toBeInTheDocument();
+      expect(screen.getByText('Samsung A30')).toBeInTheDocument();
     });
 
     fireEvent.click(screen.getByText('Remove'));
@@ -105,13 +105,13 @@ describe('CartPage', () => {
     });
 
     fireEvent.change(screen.getByLabelText('Select Delivery Address'), {
-      target: { value: '123 Main St' },
+      target: { value: ' No 7 Main street Chennai' },
     });
 
     fireEvent.click(screen.getByText('Place Order'));
 
     await waitFor(() => {
-      expect(placeOrder).toHaveBeenCalledWith('123 Main St');
+      expect(placeOrder).toHaveBeenCalledWith('No 7 Main street Chennai');
       expect(toast.success).toHaveBeenCalledWith('Order placed successfully!');
     });
   });
