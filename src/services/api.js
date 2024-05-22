@@ -144,7 +144,7 @@ export const getFilteredProducts = async (category, minPrice, maxPrice) => {
 export const fetchUserProfile = async () => {
   try {
     
-    const response = await api.get('/profile/');
+    const response = await api.get(`${BASE_URL}/profile/`);
     return response.data;
   } catch (error) {
     throw error;
@@ -152,13 +152,35 @@ export const fetchUserProfile = async () => {
 };
 
 
+// export const updateProfile = async (formData) => {
+//   try {
+    
+//     const response = await api.put('/profile/', formData);
+//     return response.data;
+//   } catch (error) {
+//     throw error  ;
+//   }
+// };
+
 export const updateProfile = async (formData) => {
   try {
-    
-    const response = await api.put('/profile/', formData);
+    // Get CSRF token from cookie
+    const csrftoken = getCookie('csrftoken');
+
+    // Make PUT request to update profile
+    const response = await axios.put(`${BASE_URL}/profile/`, formData, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrftoken,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
+
+    // Return response data
     return response.data;
   } catch (error) {
-    throw error  ;
+    // Throw error for further handling
+    throw error;
   }
 };
 
@@ -275,3 +297,5 @@ export const checkAuthentication = async () => {
     return false;
   }
 };
+
+

@@ -2,11 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Form } from 'react-bootstrap';
-import { fetchCartProducts, removeFromCart, placeOrder, fetchUserProfile } from '../services/api';
+import { fetchCartProducts, removeFromCart } from '../services/api';
+import { fetchUserProfile } from '../services/api';
+import { placeOrder } from '../services/orders';
 import Header from '@components/header.jsx'; 
 import Footer from '@components/footer.jsx'; 
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import CartItem from './cartitem';
+import './cart.css';
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -81,24 +84,25 @@ const CartPage = () => {
   return (
     <>
       <Header />
-      <Container className="mt-1">
+      <Container className="mt-4">
         <h2 className="mb-4">Shopify Cart</h2>
         <Row>
           <Col md={8}>
-            {cartItems.length === 0 ? (
-              <p>Your cart is empty.</p>
-            ) : (
-              <>
-                {cartItems.map(item => (
+            <div className="cart-items-container">
+              {cartItems.length === 0 ? (
+                <p>Your cart is empty.</p>
+              ) : (
+                cartItems.map(item => (
                   <CartItem 
                     key={item.product_id} 
                     item={item} 
                     onQuantityChange={handleQuantityChange} 
                     onRemoveFromCart={handleRemoveFromCart} 
+                    className="cart-item" 
                   />
-                ))}
-              </>
-            )}
+                ))
+              )}
+            </div>
           </Col>
           <Col md={4}>
             {userProfile && (
@@ -107,12 +111,17 @@ const CartPage = () => {
                 <p><strong>Name:</strong> {userProfile.username}</p>
                 <p><strong>Mobile:</strong> {userProfile.profile.mobile}</p>
                 <p><strong>Pincode:</strong> {userProfile.profile.pincode}</p>
-                <p><strong>Primary Address:</strong>{userProfile.profile.address}</p>
+                <p><strong>Primary Address:</strong> {userProfile.profile.address}</p>
                 <Form.Group controlId="deliveryAddress">
                   <Form.Label>Select Delivery Address</Form.Label>
                   <Form.Control as="select" onChange={(e) => setDeliveryAddress(e.target.value)}>
                     <option value="">Select Address</option>
-                    {userProfile.profile.addresses.map((address, index) => (
+                    {userProfile && userProfile.profile && (
+                      <option value={userProfile.profile.address}>
+                        {userProfile.profile.address}
+                      </option>
+                    )}
+                    {userProfile && userProfile.profile && userProfile.profile.addresses.map((address, index) => (
                       <option key={index} value={address}>{address}</option>
                     ))}
                   </Form.Control>
@@ -136,5 +145,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-
-

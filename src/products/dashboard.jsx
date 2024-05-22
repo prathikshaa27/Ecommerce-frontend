@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts, getFilteredProducts } from '@services/api';
+import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts, getFilteredProducts } from '../services/api';
 import Header from '@components/header';
 import Footer from '@components/footer';
 import CarouselComponent from './carousal';
@@ -129,5 +129,6 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
 

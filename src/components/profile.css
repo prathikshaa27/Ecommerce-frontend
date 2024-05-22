@@ -1,8 +1,9 @@
 .container.profile-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 80vh;
+  margin-top: -20px;
 }
 
 .profile-card {

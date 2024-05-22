@@ -60,8 +60,13 @@
       "^@services/(.*)$": "<rootDir>/src/services/$1",
       "^@components/(.*)$": "<rootDir>/src/components/$1",
       "^@users/(.*)$": "<rootDir>/src/users/$1"
-    }
+      
+    },
+    "transform": {
+      "^.+\\.js$": "babel-jest"
   }
+ 
 }
 
+}
 

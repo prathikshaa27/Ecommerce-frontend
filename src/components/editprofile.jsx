@@ -76,7 +76,7 @@ const EditProfile = () => {
         profile: {
           ...prevFormData.profile,
           addresses: [...prevFormData.profile.addresses, newAddress],
-          address: newAddress,
+          address: prevFormData.profile.address || newAddress,
         }
       }));
       setNewAddress('');
