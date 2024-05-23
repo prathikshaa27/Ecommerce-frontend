@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+
 import './productdesign.css';
 
 const Product = ({ product }) => {

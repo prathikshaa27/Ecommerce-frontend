@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { getProductDetails, addToCart } from '@services/api';
+
+import { getProductDetails, addToCart } from '@services/products';
 import Header from '@components/header'; 
 import Footer from '@components/footer'; 
+
 import './productdetailpage.css';
 
 const ProductDetailPage = () => {

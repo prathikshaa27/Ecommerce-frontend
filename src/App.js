@@ -1,4 +1,3 @@
-import './App.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Signup from './users/signup'; 
@@ -11,6 +10,8 @@ import EditProfile from '@components/editprofile';
 import CartPage from '@product/cart'; 
 import Orders from '@product/orders'; 
 import ProtectedRoute from './protectedroute';
+
+import './App.css';
 
 function App() {
   return (

@@ -2,13 +2,16 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Form } from 'react-bootstrap';
-import { fetchCartProducts, removeFromCart } from '../services/api';
-import { fetchUserProfile } from '../services/api';
-import { placeOrder } from '../services/orders';
+import { Button, Container, Row, Col } from 'react-bootstrap';
+
 import Header from '@components/header.jsx'; 
 import Footer from '@components/footer.jsx'; 
-import { Button, Container, Row, Col } from 'react-bootstrap';
 import CartItem from './cartitem';
+
+import { fetchCartProducts, removeFromCart } from '../services/orders';
+import { fetchUserProfile } from '../services/users';
+import { placeOrder } from '../services/orders';
+
 import './cart.css';
 
 const CartPage = () => {

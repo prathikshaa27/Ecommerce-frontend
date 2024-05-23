@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { fetchUserOrders } from '../services/api';
+
+import { fetchUserOrders } from '../services/orders';
 import Header from '@components/header';
 import Footer from '@components/footer';
+
 import './orders.css';
 
 const Orders = () => {

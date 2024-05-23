@@ -54,6 +54,7 @@ header {
   color: #fff;
   border: none;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 .nav-links button:hover {

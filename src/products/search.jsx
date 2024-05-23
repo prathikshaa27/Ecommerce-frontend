@@ -7,7 +7,8 @@ import { toast } from 'react-toastify';
 
 import './search.css'
 
-import { searchProducts } from '../services/api';
+import { searchProducts } from '../services/products';
+
 const SearchBar = ({ handleSearch }) => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,8 +50,6 @@ const SearchBar = ({ handleSearch }) => {
     }
   };
   
-  
-
   return (
     <form onSubmit={handleSubmit} className="form-inline search-bar">
       <div className="search-bar">
