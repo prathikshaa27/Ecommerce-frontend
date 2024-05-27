@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PageLayout from '@components/pagelayout';
+import PageLayout from '../dashboard/pagelayout';
 
 import { BackgroundContainer, Container, Title, Options, Button } from './homepagestyles';
 

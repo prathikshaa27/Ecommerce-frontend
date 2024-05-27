@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts, getFilteredProducts } from '../services/products';
-import Header from '@components/header';
-import Footer from '@components/footer';
+import { fetchCategories, fetchAllProducts, fetchProductsByCategory, searchProducts, getFilteredProducts } from '../../services/products';
+import Header from '../dashboard/header';
+import Footer from '../dashboard/footer';
 import CarouselComponent from './carousal';
-import Product from '@product/productdesign';
+import Product from './productdesign';
+
 import './dashboard.css';
 
 const Dashboard = () => {
@@ -23,7 +24,12 @@ const Dashboard = () => {
   const fetchCategoriesData = async () => {
     try {
       const categoriesData = await fetchCategories();
-      setCategories(categoriesData);
+      if (categoriesData && Array.isArray(categoriesData.results)) {
+        setCategories(categoriesData.results);
+      } else {
+        console.error('Unexpected response format for categories:', categoriesData);
+        toast.error('Failed to fetch categories. Please try again later.');
+      }
     } catch (error) {
       console.error('Error fetching categories:', error);
       toast.error('Failed to fetch categories. Please try again later.');
@@ -33,7 +39,12 @@ const Dashboard = () => {
   const fetchAllProductsData = async () => {
     try {
       const productsData = await fetchAllProducts();
-      setProducts(productsData);
+      if (productsData && Array.isArray(productsData.results)) {
+        setProducts(productsData.results);
+      } else {
+        console.error('Unexpected response format for products:', productsData);
+        toast.error('Failed to fetch products. Please try again later.');
+      }
     } catch (error) {
       console.error('Error fetching products:', error);
       toast.error('Failed to fetch products. Please try again later.');
@@ -55,7 +66,12 @@ const Dashboard = () => {
       const category = categories.find(cat => cat.id === categoryId);
       setSelectedCategory(category);
       const productsData = await fetchProductsByCategory(categoryId);
-      setProducts(productsData);
+      if (productsData && Array.isArray(productsData.results)) {
+        setProducts(productsData.results);
+      } else {
+        console.error(`Unexpected response format for products in category ${categoryId}:`, productsData);
+        toast.error('Failed to fetch products for selected category. Please try again later.');
+      }
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
       toast.error('Failed to fetch products for selected category. Please try again later.');
@@ -67,7 +83,12 @@ const Dashboard = () => {
       try {
         const category = selectedCategory ? selectedCategory.name : '';
         const productsData = await getFilteredProducts(category, minPrice, maxPrice);
-        setProducts(productsData);
+        if (productsData && Array.isArray(productsData.results)) {
+          setProducts(productsData.results);
+        } else {
+          console.error('Unexpected response format for filtered products:', productsData);
+          toast.error('Failed to filter products. Please try again later.');
+        }
       } catch (error) {
         console.error('Error filtering products:', error);
         toast.error('Failed to filter products. Please try again later.');
@@ -129,6 +150,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-
-

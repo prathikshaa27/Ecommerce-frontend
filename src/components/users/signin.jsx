@@ -8,7 +8,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 
-import PageLayout from '@components/pagelayout';
+import PageLayout from '../dashboard/pagelayout';
 import signinFields from './signinFields.json'
 
 import './signinstyles.css';

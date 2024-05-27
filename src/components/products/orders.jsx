@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
-import { fetchUserOrders } from '../services/orders';
-import Header from '@components/header';
-import Footer from '@components/footer';
-
+import { fetchUserOrders } from '../../services/orders';
+import Header from '../dashboard/header';
+import Footer from '../dashboard/footer';
 import './orders.css';
 
 const Orders = () => {
@@ -14,16 +12,18 @@ const Orders = () => {
     async function fetchOrders() {
       try {
         const data = await fetchUserOrders();
-        setOrders(data);
+        setOrders(data.results);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user orders:', error);
+        setOrders([]);
         setLoading(false);
       }
     }
-
+    
     fetchOrders();
-  }, []); 
+  }, []);
+  
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -76,4 +76,3 @@ const Orders = () => {
 };
 
 export default Orders;
-

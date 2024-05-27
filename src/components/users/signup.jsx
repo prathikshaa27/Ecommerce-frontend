@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import PageLayout from '../components/pagelayout';
+import PageLayout from '../dashboard/pagelayout';
 import { signup } from '@services/users';
 import signupFields from './signupFields.json';
 

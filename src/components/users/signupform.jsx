@@ -1,5 +1,5 @@
 import React from 'react';
-import SignupForm from './signupForm';
+import SignupForm from './signup';
 import * as S from './signup.styles';
 import './styles.css'
 

@@ -4,13 +4,13 @@ import { toast } from 'react-toastify';
 import { Form } from 'react-bootstrap';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 
-import Header from '@components/header.jsx'; 
-import Footer from '@components/footer.jsx'; 
+import Header from '../dashboard/header'; 
+import Footer from '../dashboard/footer'; 
 import CartItem from './cartitem';
 
-import { fetchCartProducts, removeFromCart } from '../services/orders';
-import { fetchUserProfile } from '../services/users';
-import { placeOrder } from '../services/orders';
+import { fetchCartProducts, removeFromCart } from '../../services/orders';
+import { fetchUserProfile } from '../../services/users';
+import { placeOrder } from '../../services/orders';
 
 import './cart.css';
 
@@ -34,14 +34,19 @@ const CartPage = () => {
   const fetchCartItems = async () => {
     try {
       const response = await fetchCartProducts();
-      setCartItems(response.cart_items);
-      setTotalPrice(response.total_amount);
+      if (response && response.results && response.results.cart_items) {
+        setCartItems(response.results.cart_items);
+        setTotalPrice(response.results.total_amount || 0);
+      } else {
+        console.error('Invalid response format:', response);
+        toast.error('Failed to fetch cart items. Please try again later.');
+      }
     } catch (error) {
       console.error('Error fetching cart items:', error);
       toast.error('Failed to fetch cart items. Please try again later.');
     }
   };
-
+  
   const handleRemoveFromCart = async (productId) => {
     try {
       await removeFromCart(productId);
@@ -148,3 +153,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+

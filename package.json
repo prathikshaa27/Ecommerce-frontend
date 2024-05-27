@@ -17,6 +17,7 @@
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
+    "react-icons": "^5.2.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
@@ -52,21 +53,26 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
+    "@babel/preset-react": "^7.24.6",
+    "babel-jest": "^29.7.0",
     "customize-cra": "^1.0.0",
+    "jest": "^27.5.1",
     "react-app-rewired": "^2.2.1"
   },
   "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.[tj]sx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(my-dependency)/)"
+    ],
     "moduleNameMapper": {
       "^@services/(.*)$": "<rootDir>/src/services/$1",
-      "^@components/(.*)$": "<rootDir>/src/components/$1",
-      "^@users/(.*)$": "<rootDir>/src/users/$1"
-      
-    },
-    "transform": {
-      "^.+\\.js$": "babel-jest"
+      "^@components/(.*)$": "<rootDir>/src/components/$1"
+    }
   }
- 
+  
 }
-
-}
-

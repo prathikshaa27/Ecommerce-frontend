@@ -4,7 +4,7 @@ import { logoutUser } from '@services/users';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
-import SearchBar from '@product/search';
+import SearchBar from '../products/search';
 
 import './header.css';
 

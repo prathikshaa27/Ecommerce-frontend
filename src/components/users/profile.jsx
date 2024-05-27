@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { fetchUserProfile } from '@services/users';
-import Header from '@components/header'; 
-import Footer from '@components/footer'; 
+import Header from '../dashboard/header'; 
+import Footer from '../dashboard/footer'; 
 import './profile.css'
 
 const UserProfile = () => {

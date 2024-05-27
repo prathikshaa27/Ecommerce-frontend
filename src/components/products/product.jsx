@@ -3,9 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
-import { getProductDetails, addToCart } from '@services/products';
-import Header from '@components/header'; 
-import Footer from '@components/footer'; 
+import { getProductDetails, addToCart } from '../../services/products';
+import Header from '../dashboard/header'; 
+import Footer from '../dashboard/footer'; 
 
 import './productdetailpage.css';
 
@@ -41,7 +41,7 @@ const ProductDetailPage = () => {
     try {
       await addToCart(productId, quantity);
       toast.success('Product added to cart successfully!');
-      navigate('/cart', { state: { totalPrice } });
+      navigate('/cart'); 
     } catch (error) {
       console.error('Error adding product to cart:', error);
       toast.error('Failed to add product to cart. Please try again.');
@@ -89,4 +89,3 @@ const ProductDetailPage = () => {
 };
 
 export default ProductDetailPage;
-

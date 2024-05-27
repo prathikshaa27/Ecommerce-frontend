@@ -29,3 +29,4 @@ const CartItem = ({ item, onQuantityChange, onRemoveFromCart }) => {
 };
 
 export default CartItem;
+
