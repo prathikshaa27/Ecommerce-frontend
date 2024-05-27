@@ -1,33 +1,33 @@
+import Signup from '../src/components/users/signup' 
+import Signin from '../src/components/users/signin'; 
+import HomePage from '../src/components/dashboard/home'; 
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from '../src/components/dashboard/dashboard'; 
+import ProductDetailPage from '../src/components/products/product'; 
+import UserProfile from '../src/components/users/profile'; 
+import EditProfile from '../src/components/users/editprofile'; 
+import CartPage from '../src/components/products/cart'; 
+import Orders from '../src/components/products/orders'; 
+import ProtectedRoute from './protectedroute';
+
 import './App.css';
-import React from 'react';
-import {Routes, Route } from 'react-router-dom';
-import Signup from './components/signup';
-import Signin from './components/signin';
-import HomePage from './components/home';
-import Dashboard from './components/dashboard';
-import ProductDetailPage from './components/productpage';
-import UserProfile from './components/profile';
-import EditProfile from './components/editprofile';
-import HeaderFooter from './components/headerfooter';
-import CartPage from './components/cart';
 
 function App() {
   return (
     <div>
-    
       <Routes>
-        <Route path="/" element={<HomePage/>}/>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signin" element={<Signin />} />
-         <Route path="/dashboard" element={<Dashboard/>}/> 
-         <Route path='/profile' element={<HeaderFooter><UserProfile/></HeaderFooter>}/>
-         <Route path='/editprofile' element={<HeaderFooter><EditProfile/></HeaderFooter>}/>
-         <Route path="/products/:productId" element={<HeaderFooter><ProductDetailPage/></HeaderFooter>}/>
-          <Route path="/cart" element ={<CartPage/>}/> 
-      
-        
+        <Route path="/" element={<Dashboard/>}/>
+        <Route path="/signupform" element={<Signup />} />
+        <Route path="/signinform" element={<Signin />} />
+        <Route path="/home" element={<HomePage/>}/> 
+        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/profile" element={<ProtectedRoute><UserProfile/></ProtectedRoute>}/>
+        <Route path="/editprofile" element={<ProtectedRoute><EditProfile/></ProtectedRoute>}/>
+        <Route path="/products/:productId" element={<ProductDetailPage/>}/>
+        <Route path="/products/:productId/cart" element={<CartPage/>}/> 
+        <Route path="/cart" element={<CartPage/>}/>
+        <Route path="/orders" element={<Orders/>}/>
       </Routes>
-   
     </div>
   );
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "username",
+    "type": "text",
+    "placeholder": "Username",
+    "validation": { "required": true }
+  },
+  {
+    "name": "email",
+    "type": "email",
+    "placeholder": "Email",
+    "validation": { "required": true, "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" }
+  },
+  {
+    "name": "password",
+    "type": "password",
+    "placeholder": "Password",
+    "validation": { "required": true, "minLength": 8 }
+  },
+  {
+    "name": "mobile",
+    "type": "text",
+    "placeholder": "Mobile",
+    "validation": { "required": true, "pattern": "^\\d{10}$" }
+  },
+  {
+    "name": "address",
+    "type": "text",
+    "placeholder": "Address",
+    "validation": { "required": true }
+  },
+  {
+    "name": "pincode",
+    "type": "text",
+    "placeholder": "Pincode",
+    "validation": { "required": true, "pattern": "^\\d{6}$" }
+  }
+]
